@@ -422,7 +422,54 @@ const auth = (req, res, next) => {
 app.use(auth);
 ```
 
-But we can also use apply it on particualar route
+But we can also use apply it on particualar route.
+```js
+//! home route
+app.get("/", auth, (req, res) => {
+  res.end("Hello");
+});
+```
+
+### Built-In Middleware in Express.js
+1. **express.json()**:
+   - Parses incoming requests with JSON payloads.
+   - A JSON payload refers to the data format used to send information between a client and a server in JSON format.
+   - Available from Express 4.16.0 onwards.
+
+2. **express.urlencoded()**:
+   - Parses incoming requests with URL-encoded payloads.
+   - Supports both `extended` and `simple` modes.
+   - Available from Express 4.16.0 onwards.
+
+3. **express.static()**:
+   - Serves static files such as HTML, CSS, images, and JavaScript.
+   - Configures one or more directories as static assets.
+   - This will automatically serch for `index.html` if it is found it will display it.
+
+**Example Usage**:
+
+```javascript
+const express = require('express');
+const app = express();
+
+// Use built-in middleware to parse JSON
+app.use(express.json());
+
+// Use built-in middleware to parse URL-encoded payloads
+app.use(express.urlencoded({ extended: true }));
+
+// Use built-in middleware to serve static files
+app.use(express.static('public'));
+
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
+```
+
+These middleware functions are essential for handling various types of requests and serving static content efficiently in your Express.js applications.
+
+---
+
 
 
 
