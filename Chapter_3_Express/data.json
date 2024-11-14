@@ -1,0 +1,16 @@
+{
+    "products": [
+        {
+            "name": "Redmi k9",
+            "type": "Electronics"
+        },
+        {
+            "name": "Realme 8i",
+            "type": "Electronics"
+        },
+        {
+            "name": "Sofa set ",
+            "type": "Furniture"
+        }
+    ]
+}

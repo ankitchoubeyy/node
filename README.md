@@ -229,8 +229,8 @@ server.listen(8000, () => {
     console.log(`Server is listening on port 8000...`);
 })
 ```
+> Note: Http modules is good for understanding client-server architecture but we will use `express.js` a framwork of js to to create a server and handling all the `req` and `res`.
 
-**Note**: Http modules is good for understanding client-server architecture but we will use `express.js` a framwork of js to to create a server and handling all the `req` and `res`.
 ---
 
 ### How i can send a HTML file or .json file via server response?
@@ -259,4 +259,170 @@ if(req.url === "/") {
 ---
 > Note : **HTTP** `req` and `res` can be tracked using browser `dev tools` ==> `network tab`.
 ---
+
+### What is postman?
+
+- **Postman**: A collaboration platform for API development, providing tools for testing, documentation, monitoring, and managing APIs.
+
+**Key Features**:
+1. **API Testing**:
+   - Sends requests and validates responses.
+   - Supports various HTTP methods.
+   - Allows testing with different environments and data sets.
+
+2. **API Documentation**:
+   - Auto-generates and shares API documentation.
+
+3. **API Monitoring**:
+   - Continuously monitors API performance.
+   - Sends alerts for issues.
+
+4. **Collaborative Workspaces**:
+   - Facilitates teamwork with shared projects.
+   - Includes version control and history tracking.
+
+**Benefits**:
+- **Ease of Use**: User-friendly interface.
+- **Efficiency**: Streamlines development and testing.
+- **Collaboration**: Enhances teamwork.
+- **Documentation**: Comprehensive and up-to-date API docs.
+- **Monitoring**: Ensures API reliability and performance.
+
 # Chapter - 3 (Express.js)
+
+### What is Express.js  and its Advantages?
+
+- **Express.js**: A fast, unopinionated, and minimalist web framework for Node.js, used to build web applications and APIs.
+
+**Advantages**:
+1. **Simplified Routing**:
+   - Easy and intuitive route definitions.
+   - Modular route handling.
+
+2. **Middleware Support**:
+   - Integrates middleware for request, response, and error handling.
+   - Customizes the request-response cycle.
+
+3. **Flexibility**:
+   - Unopinionated design for custom structures.
+   - Compatible with various template engines and databases.
+
+4. **Robust Ecosystem**:
+   - Extensive plugins and middleware via npm.
+   - Strong community support.
+
+5. **Efficient Development**:
+   - Built-in features streamline development.
+   - Reduces boilerplate code.
+
+6. **Scalability**:
+   - Supports scalable applications.
+   - Suitable for small and large projects.
+
+7. **Ease of Integration**:
+   - Easily integrates with other Node.js frameworks.
+   - Simplifies the development of RESTful APIs.
+---
+
+### How to create server using `Express.js` ?
+> npm install express
+
+To create a server using the following code:
+```javascript
+const express = require("express");
+
+const app = express();
+
+const PORT = 8000;
+
+app.get("/", (req, res)=> {
+    res.end("Hello");
+})
+
+app.listen(PORT, ()=> {
+    console.log(`Server is running at ${PORT}`)
+});
+```
+---
+
+### How to read file in express?
+```javascript
+//! express route
+app.get("/express", (req, res) => {
+  const index = fs.createReadStream("./index.html", "utf-8").pipe(res);
+});
+
+//! Data route
+app.get("/data", (req, res) => {
+  fs.readFile("data.json", "utf-8", (error, data) => {
+    if (error) {
+      console.error("Error reading the file:", error);
+      res.status(500).json({ message: "Internal server error" });
+      return;
+    }
+    console.log("File is successfully read.");
+    res.json(JSON.parse(data));
+  });
+});
+```
+---
+### Middleware
+**Middleware**: is a Functions in a web application that process requests and responses. They operate between the client request and the server's final response.
+
+**Key Features**:
+1. **Request Handling**:
+   - Intercepts and processes incoming requests.
+   - Modifies request objects before they reach the route handlers.
+
+2. **Response Handling**:
+   - Intercepts and processes outgoing responses.
+   - Modifies response objects before they are sent to the client.
+
+3. **Next Function**:
+   - Calls `next()` to pass control to the next middleware function.
+   - Chain multiple middleware functions together.
+
+4. **Types of Middleware**:
+   - **Application-Level Middleware**: Applied to the app instance.
+   - **Router-Level Middleware**: Applied to specific routes.
+   - **Built-In Middleware**: Provided by frameworks like Express.js (e.g., `express.json()`).
+   - **Third-Party Middleware**: Installed via npm (e.g., `body-parser`, `morgan`).
+
+5. **Common Uses**:
+   - Authentication and authorization.
+   - Logging and debugging.
+   - Parsing request bodies (e.g., JSON, URL-encoded data).
+   - Handling errors and exceptions.
+
+**Benefits**:
+- Enhances modularity and maintainability.
+- Facilitates code reuse and separation of concerns.
+- Streamlines request/response processing.
+
+### writing custom application level middleware
+```javascript
+//! writing custom application level middlewares
+app.use((req, res, next) => {
+    console.log(req.url, req.method);
+    next();
+})
+```
+### writing a router level middleware
+```javascript
+//! writing a router level middleware
+const auth = (req, res, next) => {
+    console.log(req.query.user);
+    if(req.query.user === "ankit") {
+        next();
+    }
+    else{
+        res.status(401).send("Unauthorized");
+    }
+}
+app.use(auth);
+```
+
+But we can also use apply it on particualar route
+
+
+
