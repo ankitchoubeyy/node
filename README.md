@@ -1415,7 +1415,7 @@ Public and private keys form the backbone of many secure communication protocols
 ### Stateless Vs Stateful Authentication
 
 > **Stateless authentication**
-- **Definition**: No server-side session data. Each request must contain authentication info (e.g., JWT).
+- **Definition**: Server does not store any session data in file. Each request must contain authentication info (e.g., JWT).
 - **Features**:
   - Uses tokens (e.g., JWT).
   - Easier to scale.
