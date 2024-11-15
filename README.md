@@ -1320,7 +1320,65 @@ It is powerful framework for complex operations like **filtring**, **grouping**,
 Aggregation in MongoDB is a powerful feature that enables developers to perform complex data transformations and computations on collections of documents. By utilizing the aggregation framework, users can efficiently group, filter, and manipulate data to generate summarized results.
 
 
+---
 
+# Chapter - 7 Connecting React with Backend
+
+### Frontend
+1. use axios library to make network calls
+```js
+import { useState, useEffect } from "react";
+import "./App.css";
+import axios from "axios";
+
+function App() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/api/users/");
+        setData(response.data);
+        console.log(response);
+      } catch (error) {
+        console.log(`Error in fetching data ${error.message}`);
+      }
+    };
+    fetchData();
+  }, []);
+
+  return (
+    <>
+      <h1>Data from backend</h1>
+      <div className="App">
+        {data ? (
+          data.map((user) => (
+            <div key={user._id}>
+              {" "}
+              <h1>{user.userName}</h1> <p>Email: {user.userEmail}</p>{" "}
+            </div>
+          ))
+        ) : (
+          <h1>Loading...</h1>
+        )}
+      </div>
+    </>
+  );
+}
+
+export default App;
+```
+### Backend
+1. install `cors` via `npm`
+> npm i cors
+2. use cors as a middleware
+```js
+const cors = require("cors")
+
+// middlewares
+app.use(express.json());
+app.use(cors());
+```
 
 
 
