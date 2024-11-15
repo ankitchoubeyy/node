@@ -1379,6 +1379,148 @@ const cors = require("cors")
 app.use(express.json());
 app.use(cors());
 ```
+---
+
+# Chapter - 8 JWT Authentication
+
+### Public Key and Private Key in Authentication:
+
+**Public Key and Private Key** are part of a cryptographic system known as **Public Key Infrastructure (PKI)**, which is used for secure communication and authentication in various applications, including SSL/TLS, email encryption, and digital signatures.
+
+### Public Key
+- **Definition**: The public key is a cryptographic key that can be shared openly. It is used to encrypt data that only the corresponding private key can decrypt.
+- **Usage**: Public keys are used to encrypt messages or verify digital signatures.
+- **Sharing**: It can be distributed widely and is not required to be kept secret.
+
+### Private Key
+- **Definition**: The private key is a cryptographic key that must be kept confidential. It is used to decrypt data that was encrypted with the corresponding public key or to create digital signatures.
+- **Usage**: Private keys are used to decrypt messages or create digital signatures.
+- **Security**: It must be protected and never shared to ensure the security of the encrypted data.
+
+### How They Work Together
+1. **Encryption and Decryption**:
+   - **Encryption**: The sender encrypts the data using the recipient's public key.
+   - **Decryption**: Only the recipient's private key can decrypt the data, ensuring that only the intended recipient can read the message.
+
+2. **Digital Signatures**:
+   - **Signing**: The sender uses their private key to sign a message or document.
+   - **Verification**: The recipient uses the sender's public key to verify the authenticity of the signature. If the verification is successful, it confirms that the message was indeed signed by the sender and was not altered.
+
+### Example Use Case
+- **SSL/TLS**: When you visit a secure website (https://), the website's server provides its public key to your browser. Your browser uses this public key to establish an encrypted connection, ensuring that sensitive information like login credentials and credit card numbers remain secure.
+
+Public and private keys form the backbone of many secure communication protocols, providing both confidentiality and authentication to ensure secure data exchange.
+
+--- 
+### Stateless Vs Stateful Authentication
+
+> **Stateless authentication**
+- **Definition**: No server-side session data. Each request must contain authentication info (e.g., JWT).
+- **Features**:
+  - Uses tokens (e.g., JWT).
+  - Easier to scale.
+  - Common in RESTful APIs.
+
+> **Stateful Authentication**
+- **Definition**: Server maintains user session info.
+- **Features**:
+  - Uses server-stored sessions.
+  - More secure for sensitive data.
+  - Common in traditional web apps.
+---
+### Authentication VS Authorization
+Sure, here's a simple and short explanation of the difference between authentication and authorization:
+
+**Authentication:** It is the process of verifying the identity of a user or entity. It's like checking if someone is who they claim to be. For example, when you log in to a website with a username and password, you are authenticating yourself.
+
+**Authorization:** It is the process of determining what an authenticated user is allowed to do. It's like checking what permissions or access levels the user has. For example, after logging in, you may have the authorization to view your profile but not to access the admin panel.
+
+In short: **Authentication = Who are you?** and **Authorization = What are you allowed to do?**
+
+---
+
+## What is JWT?
+JWT tokens, or JSON Web Tokens, are a type of token used to securely transmit information between parties as a JSON object. They are commonly used for authentication and authorization purposes in web applications.
+
+A JWT token consists of three parts:
+1. **Header:** Contains metadata about the token, such as the type of token and the algorithm used for signing.
+2. **Payload:** Contains the claims or data you want to transmit, such as user information and permissions.
+3. **Signature:** A cryptographic signature that ensures the token has not been tampered with. It also consists information of Header and payload.
+
+These three parts are encoded and separated by dots (.) to form the complete JWT token. Here's a simple example of a JWT token:
+
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+```
+
+- By default **jwt** uses `HS256` algorithm.
+
+When a user logs in, the server generates a JWT token and sends it back to the client. The client then includes this token in the header of subsequent requests to access protected resources. The server verifies the token to ensure the user is authenticated and authorized to perform the requested actions.
+
+> JWT tokens are popular because they are compact, self-contained, and can be easily used across different domains. 🌐🔐
+---
+### How do you securely store a JWT token in client side?
+Storing a JWT token securely on the client side is essential to prevent unauthorized access and potential security vulnerabilities. Here are some best practices for doing so:
+
+1. **Local Storage or Session Storage:**
+   - Avoid using localStorage or sessionStorage for storing sensitive data like JWT tokens, as these storages are accessible via JavaScript and can be vulnerable to cross-site scripting (XSS) attacks.
+
+2. **HTTP-only Cookies:**
+   - Store the JWT token in an HTTP-only cookie. HTTP-only cookies are not accessible via JavaScript, reducing the risk of XSS attacks. Ensure the cookie is also marked as secure to be transmitted only over HTTPS.
+
+   ```javascript
+   // Example of setting an HTTP-only cookie in an Express.js server
+   res.cookie('token', jwtToken, {
+     httpOnly: true,
+     secure: true, // Ensure the cookie is sent only over HTTPS
+     sameSite: 'strict', // Helps mitigate CSRF attacks
+   });
+   ```
+
+3. **Short Token Lifespan:**
+   - Keep the JWT token's lifespan short. Use refresh tokens to extend the session securely. Refresh tokens should also be stored securely, following the same guidelines.
+
+4. **Secure Communication:**
+   - Always transmit JWT tokens over HTTPS to prevent interception by man-in-the-middle attacks.
+
+5. **Token Rotation:**
+   - Implement token rotation mechanisms. Refresh tokens periodically and invalidate old tokens to minimize the impact of token theft.
+
+By following these practices, you can significantly reduce the risks associated with storing JWT tokens on the client side. 🛡️🔐
+### How can you invalidate (Log out) a jwt?
+Invalidating a JWT (JSON Web Token) is important to ensure that users can't use outdated or compromised tokens to access protected resources. Here are a few methods to invalidate a JWT:
+
+1. **Token Expiry:**
+   - Set a short expiration time for tokens. Once the token expires, the user needs to obtain a new token. This reduces the risk of long-lived tokens being misused.
+
+   ```javascript
+   const token = jwt.sign({ userId: 123 }, 'secretKey', { expiresIn: '1h' });
+   ```
+
+2. **Token Blacklisting with a Database:**
+   - Store the tokens in a database with an "active" or "revoked" status. When a user logs out or you want to invalidate a token, update its status in the database to "revoked."
+
+3. **Rotate Tokens:**
+   - Use refresh tokens alongside access tokens. Refresh tokens have a longer lifespan and can be used to obtain new access tokens. When a refresh token is used, issue a new access token and refresh token, invalidating the old refresh token.
+
+   ```javascript
+   const accessToken = jwt.sign({ userId: 123 }, 'secretKey', { expiresIn: '15m' });
+   const refreshToken = jwt.sign({ userId: 123 }, 'refreshSecretKey', { expiresIn: '7d' });
+   ```
+
+4. **Invalidate Tokens on Password Change:**
+   - Invalidate all tokens when a user's password is changed. You can do this by including a "password change timestamp" in the token payload and checking it against the timestamp stored in the database.
+
+   ```javascript
+   const token = jwt.sign({ userId: 123, pwdChangedAt: user.pwdChangedAt }, 'secretKey');
+   ```
+
+By using these methods, you can effectively manage the lifecycle of JWTs and ensure that compromised tokens are properly invalidated. 🔒\
+
+
+
+
+
 
 
 
