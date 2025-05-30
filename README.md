@@ -1,4 +1,52 @@
-# Node
+# Node.js Study Guide - Index
+
+- [Chapter - 1 (Introduction)](#chapter---1-introduction)
+  - [What is Node?](#what-is-node)
+  - [Is node a web server?](#is-node-is-a-web-server)
+  - [Why node in web server?](#why-node-in-web-server)
+  - [REPL](#what-is-repl)
+  - [Modules](#what-is-module)
+  - [FS Module](#fs-modules)
+  - [NPM](#npm-init)
+
+- [Chapter - 2 (HTTP Server)](#chapter---2-http-server)
+  - [Client-Server Architecture](#clinet---server-architecture)
+  - [Status Codes](#nodejs-status-codes-overview)
+  - [Creating HTTP Server](#how-to-create-a-http-server)
+  - [Sending Files](#how-i-can-send-a-html-file-or-json-file-via-server-response)
+  - [Postman](#what-is-postman)
+
+- [Chapter - 3 (Express.js)](#chapter---3-expressjs)
+  - [Express Advantages](#what-is-expressjs--and-its-advantages)
+  - [Creating Server](#how-to-create-server-using-expressjs)
+  - [Middleware](#middleware)
+    - [Application Level](#writing-custom-application-level-middleware)
+    - [Router Level](#writing-a-router-level-middleware)
+    - [Built-in Middleware](#built-in-middleware-in-expressjs)
+
+- [Chapter - 4 (REST API)](#chapter---4-rest-api)
+  - [Industry-Grade API Setup](#1-setup-and-project-initialization)
+  - [Controllers Example](#controllers-example)
+
+- [Chapter - 6 (MongoDB)](#chapter---6-mongodb)
+  - [Collections/Documents](#collection)
+  - [SQL vs NoSQL](#sql-vs-nosql)
+  - [CRUD Operations](#crud-operations)
+  - [Data Types](#data-types)
+  - [Operators](#mongodb-operators)
+  - [Aggregation](#aggregate-framework)
+
+- [Chapter - 7 (Connecting React)](#chapter---7-connecting-react-with-backend)
+  - [Frontend Setup](#frontend)
+  - [Backend Setup](#backend)
+
+- [Chapter - 8 (JWT Authentication)](#chapter---8-jwt-authentication)
+  - [Public/Private Keys](#public-key-and-private-key-in-authentication)
+  - [Stateless vs Stateful](#stateless-vs-stateful-authentication)
+  - [Auth vs AuthZ](#authentication-vs-authorization)
+  - [JWT Basics](#what-is-jwt)
+  - [Secure Storage](#how-do-you-securely-store-a-jwt-token-in-client-side)
+  - [Invalidating Tokens](#how-can-you-invalidate-log-out-a-jwt)
 ### What is Node?
 - Run time enviroment, but DOM api is not there in your system.
 - DOM api is only available in browser.
