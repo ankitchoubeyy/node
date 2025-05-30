@@ -1,4 +1,4 @@
-# Node.js Study Guide - Index
+# Node.js Study Guide
 
 - [Chapter - 1 (Introduction)](#chapter---1-introduction)
   - [What is Node?](#what-is-node)
